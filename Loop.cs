@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ShellApplication
 {
@@ -16,6 +17,14 @@ namespace ShellApplication
 
         public void InitLoop()
         {
+            //Process ExternalProcess = new Process();
+            //ExternalProcess.StartInfo.FileName = "docker";
+            //ExternalProcess.StartInfo.RedirectStandardOutput = true;
+            //ExternalProcess.StartInfo.UseShellExecute = false;
+            //ExternalProcess.OutputDataReceived += (sender, args) => Console.WriteLine(args.Data);
+            //ExternalProcess.Start();
+            //ExternalProcess.BeginOutputReadLine();
+
             while (true)
             {
                 this.WriteHeading();
@@ -69,7 +78,7 @@ namespace ShellApplication
         {
             List<string> Arguments = new List<string>(this.ParseCommand(command.Trim()));
 
-            if (Arguments.Count == 0)
+            if (Arguments[0] == "")
             {
                 return "";
             }

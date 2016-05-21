@@ -14,11 +14,12 @@ namespace ShellApplication
             this.List = new Dictionary<string, CommandInterface>();
 
             // Register builtin commands
-            this.RegisterBuiltinFunction(new ChangeDirectory());
-            this.RegisterBuiltinFunction(new ListDirectory());
-            this.RegisterBuiltinFunction(new PrintEnvironment());
-            this.RegisterBuiltinFunction(new QuitShell());
-            this.RegisterBuiltinFunction(new ClearConsole());
+            this.RegisterBuiltinFunction(new ChangeDirectory()); // cd
+            this.RegisterBuiltinFunction(new ListDirectory()); // dir
+            this.RegisterBuiltinFunction(new PrintEnvironment()); // environ
+            this.RegisterBuiltinFunction(new QuitShell()); // quit
+            this.RegisterBuiltinFunction(new ClearConsole()); // clr
+            this.RegisterBuiltinFunction(new PauseInput()); // pause
         }
 
         private void RegisterBuiltinFunction(CommandInterface BuiltinFunction)

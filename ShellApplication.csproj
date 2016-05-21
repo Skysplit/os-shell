@@ -60,6 +60,7 @@
     <Compile Include="Commands\ChangeDirectory.cs" />
     <Compile Include="Commands\ClearConsole.cs" />
     <Compile Include="Commands\ListDirectory.cs" />
+    <Compile Include="Commands\PauseInput.cs" />
     <Compile Include="Commands\PrintEnvironment.cs" />
     <Compile Include="Commands\QuitShell.cs" />
     <Compile Include="Loop.cs" />
