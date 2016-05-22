@@ -1,0 +1,6 @@
+﻿Usage help [<command>]
+
+Available commands
+help - this help
+cd <directory> - change directory
+dir [<directory>] - show entries of given driectory

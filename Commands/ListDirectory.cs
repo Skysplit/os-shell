@@ -25,9 +25,9 @@ namespace ShellApplication.Commands
                 return string.Format("Directory \"{0}\" does not exists", CurrentDirectory);
             }
 
-            List<string> FilesList = new List<string>(Directory.GetFileSystemEntries(CurrentDirectory));
+            List<string> FilesList = new List<string>();
 
-            return string.Join("\r\n", FilesList.ConvertAll(s => Path.GetFileName(s)).ToArray());
+            return string.Join("\r\n", Array.ConvertAll<string, string>(Directory.GetFileSystemEntries(CurrentDirectory), s => Path.GetFileName(s)));
         }
     }
 }

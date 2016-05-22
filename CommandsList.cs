@@ -20,6 +20,7 @@ namespace ShellApplication
             this.RegisterBuiltinFunction(new QuitShell()); // quit
             this.RegisterBuiltinFunction(new ClearConsole()); // clr
             this.RegisterBuiltinFunction(new PauseInput()); // pause
+            this.RegisterBuiltinFunction(new ComandHelper()); // help
         }
 
         private void RegisterBuiltinFunction(CommandInterface BuiltinFunction)
