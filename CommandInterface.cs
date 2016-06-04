@@ -1,8 +1,10 @@
-﻿namespace ShellApplication
+﻿using System.IO;
+
+namespace ShellApplication
 {
     interface CommandInterface
     {
         string GetName();
-        string Execute(Loop ctx, string[] args);
+        int Execute(Loop ctx, TextWriter stdout, TextReader stdin, string[] args);
     }
 }

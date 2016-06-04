@@ -9,21 +9,24 @@ namespace ShellApplication.Commands
             return "cd";
         }
 
-        public string Execute(Loop ctx, string[] args)
+        public int Execute(Loop ctx, TextWriter stdout, TextReader stdin, string[] args)
         {
             if (args.Length == 0)
             {
-                return Directory.GetCurrentDirectory();
+                stdout.WriteLine(Directory.GetCurrentDirectory());
+                return 0;
             }
 
             if (!Directory.Exists(args[0]))
             {
-                return string.Format("Directory {0} does not exists", args[0]);
+                stdout.WriteLine(string.Format("Directory {0} does not exists", args[0]));
+                return 1;
             }
 
             Directory.SetCurrentDirectory(args[0]);
 
-            return string.Format("Directory changed to {0}", args[0]);
+            stdout.WriteLine(string.Format("Directory changed to {0}", args[0]));
+            return 0;
         }
     }
 }

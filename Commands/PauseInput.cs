@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 
 namespace ShellApplication.Commands
 {
@@ -12,9 +10,9 @@ namespace ShellApplication.Commands
             return "pause";
         }
 
-        public string Execute(Loop ctx, string[] args)
+        public int Execute(Loop ctx, TextWriter stdout, TextReader stdin, string[] args)
         {
-            Console.WriteLine("Press enter to unpause");
+            stdout.WriteLine("Press enter to unpause");
 
             while (true)
             {
@@ -24,7 +22,7 @@ namespace ShellApplication.Commands
                 }
             }
 
-            return "";
+            return 0;
         }
     }
 }

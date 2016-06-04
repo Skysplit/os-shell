@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,7 +12,7 @@ namespace ShellApplication.Commands
             return "environ";
         }
 
-        public string Execute(Loop ctx, string[] args)
+        public int Execute(Loop ctx, TextWriter stdout, TextReader stdin, string[] args)
         {
             List<string> EnvList = new List<string>();
 
@@ -20,7 +21,8 @@ namespace ShellApplication.Commands
                 EnvList.Add(string.Format("{0}={1}", entry.Key, entry.Value));
             }
 
-            return string.Join("\r\n", EnvList.ToArray());
+            stdout.WriteLine(string.Join("\r\n", EnvList.ToArray()));
+            return 0;
         }
     }
 }

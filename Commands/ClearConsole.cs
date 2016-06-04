@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace ShellApplication.Commands
 {
@@ -13,10 +10,10 @@ namespace ShellApplication.Commands
             return "clr";
         }
 
-        public string Execute(Loop ctx, string[] args)
+        public int Execute(Loop ctx, TextWriter stdout, TextReader stdin, string[] args)
         {
             Console.Clear();
-            return "";
+            return 0;
         }
     }
 }

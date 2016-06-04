@@ -11,7 +11,7 @@ namespace ShellApplication.Commands
             return "dir";
         }
 
-        public string Execute(Loop ctx, string[] args)
+        public int Execute(Loop ctx, TextWriter stdout, TextReader stdin, string[] args)
         {
             string CurrentDirectory = Directory.GetCurrentDirectory();
 
@@ -22,12 +22,15 @@ namespace ShellApplication.Commands
 
             if (!Directory.Exists(CurrentDirectory))
             {
-                return string.Format("Directory \"{0}\" does not exists", CurrentDirectory);
+                stdout.WriteLine(string.Format("Directory \"{0}\" does not exists", CurrentDirectory));
+                return 1;
             }
 
             List<string> FilesList = new List<string>();
 
-            return string.Join("\r\n", Array.ConvertAll<string, string>(Directory.GetFileSystemEntries(CurrentDirectory), s => Path.GetFileName(s)));
+            stdout.WriteLine(string.Join("\r\n", Array.ConvertAll<string, string>(Directory.GetFileSystemEntries(CurrentDirectory), s => Path.GetFileName(s))));
+
+            return 0;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace ShellApplication.Commands
             return "help";
         }
 
-        public string Execute(Loop ctx, string[] args)
+        public int Execute(Loop ctx, TextWriter stdout, TextReader stdin, string[] args)
         {
             string HelperFileRoot = Path.Combine(Path.GetDirectoryName(Environment.GetEnvironmentVariable("shell")), "docs");
             string HelperFile = "help";
@@ -27,10 +27,12 @@ namespace ShellApplication.Commands
 
             if (File.Exists(HelperFilePath))
             {
-                return string.Join("\n", File.ReadAllLines(HelperFilePath));
+                stdout.WriteLine(string.Join("\n", File.ReadAllLines(HelperFilePath)));
+                return 0;
             }
 
-            return string.Format("Could not find help file for command \"{0}\"", HelperFile);
+            stdout.WriteLine(string.Format("Could not find help file for command \"{0}\"", HelperFile));
+            return 1;
         }
     }
 }
