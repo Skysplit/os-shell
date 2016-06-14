@@ -59,11 +59,6 @@ namespace ShellApplication
             Console.ResetColor();
 
             Console.Write("\r\n> ");
-
-            foreach (Type tinterface in typeof(StreamReader).GetInterfaces())
-            {
-                Console.WriteLine(tinterface);
-            }
         }
 
         private string ReadCommandLine()
@@ -71,7 +66,7 @@ namespace ShellApplication
             return Console.ReadLine();
         }
 
-        private int ExecuteCommand(string command)
+        public int ExecuteCommand(string command)
         {
             List<string> Arguments = new List<string>(this.ParseCommand(command.Trim()));
 
@@ -116,7 +111,11 @@ namespace ShellApplication
 
                     if (streamChar == "<")
                     {
-                        
+                        stdin = new StreamReader(filePath);
+                    }
+                    else
+                    {
+                        stdout = new StreamWriter(filePath);
                     }
                 }
                 else
@@ -162,11 +161,15 @@ namespace ShellApplication
 
                 ExternalProcess.StartInfo.UseShellExecute = false;
 
-                ExternalProcess.StartInfo.RedirectStandardInput = true;
-                ExternalProcess.StartInfo.RedirectStandardInput = true;
-                ExternalProcess.StartInfo.RedirectStandardError = true;
-
                 ExternalProcess.Start();
+
+                string line;
+                while ((line = stdin.ReadLine()) != null) {
+                    ExternalProcess.StandardInput.WriteLine(line);
+                }
+
+                stdout.Write(ExternalProcess.StandardOutput.ReadToEnd());
+
                 ExternalProcess.WaitForExit();
 
                 return ExternalProcess.ExitCode;
