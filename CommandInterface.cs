@@ -5,6 +5,6 @@ namespace ShellApplication
     interface CommandInterface
     {
         string GetName();
-        int Execute(Loop ctx, TextWriter stdout, TextReader stdin, string[] args);
+        int Execute(Loop ctx, TextWriter stdout, TextReader stdin, TextWriter stderr, string[] args);
     }
 }

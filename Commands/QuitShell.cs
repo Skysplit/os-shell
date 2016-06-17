@@ -10,8 +10,9 @@ namespace ShellApplication.Commands
             return "quit";
         }
 
-        public int Execute(Loop ctx, TextWriter stdout, TextReader stdin, string[] args)
+        public int Execute(Loop ctx, TextWriter stdout, TextReader stdin, TextWriter stderr, string[] args)
         {
+            // Terminate current process
             Environment.Exit(1);
 
             return 0;

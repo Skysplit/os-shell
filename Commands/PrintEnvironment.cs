@@ -12,10 +12,11 @@ namespace ShellApplication.Commands
             return "environ";
         }
 
-        public int Execute(Loop ctx, TextWriter stdout, TextReader stdin, string[] args)
+        public int Execute(Loop ctx, TextWriter stdout, TextReader stdin, TextWriter stderr, string[] args)
         {
             List<string> EnvList = new List<string>();
 
+            // Convert dictionary entries into Key=Value strings array
             foreach (DictionaryEntry entry in Environment.GetEnvironmentVariables())
             {
                 EnvList.Add(string.Format("{0}={1}", entry.Key, entry.Value));

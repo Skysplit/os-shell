@@ -18,6 +18,7 @@ namespace ShellApplication
 
         public void InitLoop()
         {
+            // Setup shell loop
             while (true)
             {
                 this.WriteHeading();
@@ -68,8 +69,10 @@ namespace ShellApplication
 
         public int ExecuteCommand(string command)
         {
+            // Parse arguments
             List<string> Arguments = new List<string>(this.ParseCommand(command.Trim()));
 
+            // Check if first argument actually exists
             if (Arguments[0] == "")
             {
                 return 0;
@@ -78,15 +81,18 @@ namespace ShellApplication
             string CmdName = Arguments[0];
             Arguments.RemoveAt(0);
 
+            // Check if last argument is an ampersand (&)
             if (Arguments.Count > 0 && Arguments[Arguments.Count - 1] == "&")
             {
+                // Do not treat ampersand as argument
                 Arguments.RemoveAt(Arguments.Count - 1);
 
+                // Execute process in background using null stdin, stdout and stderr
                 this.ExecuteBackground(CmdName, TextWriter.Null, TextReader.Null, TextWriter.Null, Arguments.ToArray());
                 return 0;
             }
 
-
+            // Setup default stdin, stdout and stderr
             TextWriter stdout = Console.Out;
             TextReader stdin = Console.In;
             TextWriter stderr = Console.Error;
@@ -142,36 +148,51 @@ namespace ShellApplication
 
         private void ExecuteBackground(string cmd, TextWriter stdout, TextReader stdin, TextWriter stderr, string[] args)
         {
+            // Execute foreground process in background using non-blocking thread
             Thread thread = new Thread(() => this.ExecuteForeground(cmd, stdout, stdin, stderr, args));
             thread.Start();
         }
 
         private int ExecuteForeground(string cmd, TextWriter stdout, TextReader stdin, TextWriter stderr, string[] args)
         {
+            // Check if command is on list of built-in commands
             if (this.BuiltinCommands.List.ContainsKey(cmd))
             {
-                return this.BuiltinCommands.List[cmd].Execute(this, stdout, stdin, args);
+                // Execute built-in command
+                return this.BuiltinCommands.List[cmd].Execute(this, stdout, stdin, stderr, args);
             }
             else
             {
+                // Create new external process
                 Process ExternalProcess = new Process();
 
+                // Setup executed command
                 ExternalProcess.StartInfo.FileName = cmd;
+
+                // Setup arguments
                 ExternalProcess.StartInfo.Arguments = string.Join(" ", args);
 
+                // Setup parent environment variable for this process
+                ExternalProcess.StartInfo.EnvironmentVariables["parent"] = Environment.GetEnvironmentVariable("shell");
                 ExternalProcess.StartInfo.UseShellExecute = false;
 
+                // Start process
                 ExternalProcess.Start();
 
                 string line;
+
+                // Write to process stdin from defined stdin
                 while ((line = stdin.ReadLine()) != null) {
                     ExternalProcess.StandardInput.WriteLine(line);
                 }
 
+                // Write to defined stdout from process stdout
                 stdout.Write(ExternalProcess.StandardOutput.ReadToEnd());
 
+                // Wait for process to exit
                 ExternalProcess.WaitForExit();
 
+                // Return process' exit code
                 return ExternalProcess.ExitCode;
             }
         }

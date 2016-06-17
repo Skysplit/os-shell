@@ -11,24 +11,27 @@ namespace ShellApplication.Commands
             return "dir";
         }
 
-        public int Execute(Loop ctx, TextWriter stdout, TextReader stdin, string[] args)
+        public int Execute(Loop ctx, TextWriter stdout, TextReader stdin, TextWriter stderr, string[] args)
         {
-            string CurrentDirectory = Directory.GetCurrentDirectory();
+            // Make current directory default directory we are listing
+            string PrintDirectory = Directory.GetCurrentDirectory();
 
             if (args.Length != 0)
             {
-                CurrentDirectory = args[0];
+                PrintDirectory = args[0];
             }
 
-            if (!Directory.Exists(CurrentDirectory))
+            // Check if given directory exists
+            if (!Directory.Exists(PrintDirectory))
             {
-                stdout.WriteLine(string.Format("Directory \"{0}\" does not exists", CurrentDirectory));
+                stdout.WriteLine(string.Format("Directory \"{0}\" does not exists", PrintDirectory));
                 return 1;
             }
 
             List<string> FilesList = new List<string>();
 
-            stdout.WriteLine(string.Join("\r\n", Array.ConvertAll<string, string>(Directory.GetFileSystemEntries(CurrentDirectory), s => Path.GetFileName(s))));
+            // Convert array of system entries into array of strings and join them with newlines
+            stdout.WriteLine(string.Join("\r\n", Array.ConvertAll<string, string>(Directory.GetFileSystemEntries(PrintDirectory), s => Path.GetFileName(s))));
 
             return 0;
         }
